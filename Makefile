@@ -1,6 +1,6 @@
-VERSION         := 0.0.1
+VERSION         := $(shell pulumictl get version)
 
-PACK            := xyz
+PACK            := clouddns
 PROJECT         := github.com/pulumi/pulumi-${PACK}
 
 PROVIDER        := pulumi-resource-${PACK}
@@ -18,7 +18,17 @@ install:: install_provider install_dotnet_sdk install_nodejs_sdk
 
 # Ensure all dependencies are installed
 ensure::
-	yarn install
+	cd provider && go mod tidy
+	cd sdk && go mod tidy
+	
+# Tidy up SDKs
+clean::
+	rm -rf sdk/dotnet
+	rm -rf sdk/go
+	rm -rf sdk/nodejs
+	rm -rf sdk/python
+	rm -rf bin dist node_modules nuget
+
 
 # Provider
 build_provider:: ensure
@@ -54,6 +64,7 @@ dist:: build_provider
 
 gen_go_sdk::
 	rm -rf sdk/go
+# pulumi package gen-sdk bin/${PROVIDER} --language go
 	cd provider/cmd/${CODEGEN} && go run . go ../../../sdk/go ${SCHEMA_PATH}
 
 ## Empty build target for Go
@@ -62,11 +73,15 @@ build_go_sdk::
 
 # .NET SDK
 
-gen_dotnet_sdk::
+gen_dotnet_sdk:: DOTNET_VERSION := $(shell pulumictl get version --language dotnet)
+gen_dotnet_sdk:: 
 	rm -rf sdk/dotnet
-	cd provider/cmd/${CODEGEN} && go run . dotnet ../../../sdk/dotnet ${SCHEMA_PATH}
+	pulumi package gen-sdk bin/${PROVIDER} --language dotnet
+	cd sdk/dotnet/&& \
+		echo "${DOTNET_VERSION}" >version.txt && \
+		dotnet build /p:Version=${DOTNET_VERSION}
 
-build_dotnet_sdk:: DOTNET_VERSION := ${VERSION}
+build_dotnet_sdk:: DOTNET_VERSION := $(shell pulumictl get version --language dotnet)
 build_dotnet_sdk:: gen_dotnet_sdk
 	cd sdk/dotnet/ && \
 		echo "${DOTNET_VERSION}" >version.txt && \
@@ -82,7 +97,7 @@ install_dotnet_sdk:: build_dotnet_sdk
 
 gen_nodejs_sdk::
 	rm -rf sdk/nodejs
-	cd provider/cmd/${CODEGEN} && go run . nodejs ../../../sdk/nodejs ${SCHEMA_PATH}
+	pulumi package gen-sdk bin/pulumi-resource-clouddns --language nodejs
 
 build_nodejs_sdk:: gen_nodejs_sdk
 	cd sdk/nodejs/ && \
@@ -97,12 +112,11 @@ build_nodejs_sdk:: gen_nodejs_sdk
 install_nodejs_sdk:: build_nodejs_sdk
 	yarn link --cwd ${WORKING_DIR}/sdk/nodejs/bin
 
-
 # Python SDK
 
 gen_python_sdk::
 	rm -rf sdk/python
-	cd provider/cmd/${CODEGEN} && go run . python ../../../sdk/python ${SCHEMA_PATH}
+	pulumi package gen-sdk bin/pulumi-resource-clouddns --language python
 	cp ${WORKING_DIR}/README.md sdk/python
 
 build_python_sdk:: PYPI_VERSION := ${VERSION}

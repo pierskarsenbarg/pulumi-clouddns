@@ -1,6 +1,6 @@
-import * as xyz from "@pulumi/xyz";
+import * as clouddns from "@pulumi/clouddns";
 
-const page = new xyz.StaticPage("page", {
+const page = new clouddns.StaticPage("page", {
     indexContent: "<html><body><p>Hello world!</p></body></html>",
 });
 
