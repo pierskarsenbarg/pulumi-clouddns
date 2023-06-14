@@ -20,6 +20,8 @@ updates:
       include: "scope"
   - package-ecosystem: "npm"
     directory: "/provider/cmd/pulumi-resource-clouddns"
+    ignore: 
+      - dependency-name: "typescript"
     schedule: 
       interval: "daily"
       time: "00:01"
