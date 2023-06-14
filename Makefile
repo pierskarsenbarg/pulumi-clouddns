@@ -28,6 +28,7 @@ clean::
 	rm -rf sdk/nodejs
 	rm -rf sdk/python
 	rm -rf bin dist node_modules nuget
+	git clean -fdx
 
 
 # Provider
@@ -64,8 +65,8 @@ dist:: build_provider
 
 gen_go_sdk::
 	rm -rf sdk/go
-# pulumi package gen-sdk bin/${PROVIDER} --language go
 	cd provider/cmd/${CODEGEN} && go run . go ../../../sdk/go ${SCHEMA_PATH}
+	cd sdk && go mod tidy && cd -
 
 ## Empty build target for Go
 build_go_sdk::
