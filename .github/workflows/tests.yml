@@ -1,0 +1,30 @@
+name: run-tests
+"on":
+  pull_request:
+    branches:
+    - main
+jobs:
+  prerequisites:
+    if: github.event_name == 'repository_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+    name: prerequisites
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{matrix.goversion}}
+      - name: Install NodeJS
+        uses: actions/setup-nodejs@v4
+        with:
+          node-versino: ${{matrix.nodeversion}}
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ env.PR_COMMIT_SHA }}
+      strategy:
+        fail-fast: true
+        matrix:
+          nodeversion:
+            - 16.x
+          goversion:
+            - 1.19.x
