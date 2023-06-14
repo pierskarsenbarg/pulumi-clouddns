@@ -1,4 +1,5 @@
 {
+    "name": "@pierskarsenbarg/clouddns",
     "version": "${VERSION}",
     "bin": "bin/index.js",
     "dependencies": {
@@ -9,5 +10,6 @@
         "@types/node": "^10.0.0",
         "pkg": "^5.6.0",
         "typescript": "^4.0.0"
-    }
+    },
+    "license": "Apache-2.0"
 }
