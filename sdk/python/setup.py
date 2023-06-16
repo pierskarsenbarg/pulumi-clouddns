@@ -37,7 +37,7 @@ def readme():
         return "clouddns Pulumi Package - Development Version"
 
 
-setup(name='pulumi_clouddns',
+setup(name='pierskarsenbarg_pulumi_clouddns',
       python_requires='>=3.7',
       version=VERSION,
       long_description=readme(),
@@ -47,7 +47,7 @@ setup(name='pulumi_clouddns',
       },
       packages=find_packages(),
       package_data={
-          'pulumi_clouddns': [
+          'pierskarsenbarg_pulumi_clouddns': [
               'py.typed',
               'pulumi-plugin.json',
           ]
@@ -55,6 +55,7 @@ setup(name='pulumi_clouddns',
       install_requires=[
           'parver>=0.2.1',
           'pulumi>=3.0.0,<4.0.0',
+          'pulumi-akamai>=4.0.0,<5.0.0',
           'pulumi-aws>=5.0.0,<6.0.0',
           'semver>=2.8.1'
       ],

@@ -13,7 +13,7 @@ _utilities.register(
  {
   "pkg": "clouddns",
   "mod": "index",
-  "fqn": "pulumi_clouddns",
+  "fqn": "pierskarsenbarg_pulumi_clouddns",
   "classes": {
    "clouddns:index:StaticPage": "StaticPage"
   }
@@ -25,7 +25,7 @@ _utilities.register(
  {
   "pkg": "clouddns",
   "token": "pulumi:providers:clouddns",
-  "fqn": "pulumi_clouddns",
+  "fqn": "pierskarsenbarg_pulumi_clouddns",
   "class": "Provider"
  }
 ]

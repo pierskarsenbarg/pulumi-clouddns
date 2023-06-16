@@ -14,7 +14,7 @@
             ],
             "properties": {
                 "bucket": {
-                    "$ref": "/aws/v4.0.0/schema.json#/resources/aws:s3%2Fbucket:Bucket",
+                    "$ref": "/aws/v5.0.0/schema.json#/resources/aws:s3%2Fbucket:Bucket",
                     "description": "The bucket resource."
                 },
                 "websiteUrl": {
@@ -30,20 +30,24 @@
     },
     "language": {
         "csharp": {
+            "rootNamespace": "PiersKarsenbarg",
             "packageReferences": {
                 "Pulumi": "3.*",
-                "Pulumi.Aws": "5.*"
+                "Pulumi.Aws": "5.*",
+                "Pulumi.Akamai": "4.*"
             },
             "respectSchemaVersion": true
         },
         "go": {
             "generateResourceContainerTypes": true,
-            "importBasePath": "github.com/pulumi/pulumi-clouddns/sdk/go/clouddns",
+            "importBasePath": "github.com/pierskarsenbarg/pulumi-clouddns/sdk/go/clouddns",
             "respectSchemaVersion": true
         },
         "nodejs": {
+            "packageName": "@pierskarsenbarg/clouddns",
             "dependencies": {
-                "@pulumi/aws": "^5.0.0"
+                "@pulumi/aws": "^5.0.0",
+                "@pulumi/akamai": "^4.4.0"
             },
             "devDependencies": {
                 "typescript": "^3.7.0"
@@ -53,9 +57,11 @@
         "python": {
             "requires": {
                 "pulumi": ">=3.0.0,<4.0.0",
-                "pulumi-aws": ">=5.0.0,<6.0.0"
+                "pulumi-aws": ">=5.0.0,<6.0.0",
+                "pulumi-akamai": ">=4.0.0,<5.0.0"
             },
-            "respectSchemaVersion": true
+            "respectSchemaVersion": true,
+            "packageName": "pierskarsenbarg_pulumi_clouddns"
         }
     }
 }

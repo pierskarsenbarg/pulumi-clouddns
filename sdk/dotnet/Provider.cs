@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
+using Pulumi;
 
-namespace Pulumi.Clouddns
+namespace PiersKarsenbarg.Clouddns
 {
     [ClouddnsResourceType("pulumi:providers:clouddns")]
     public partial class Provider : global::Pulumi.ProviderResource

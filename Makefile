@@ -36,7 +36,7 @@ build_provider:: ensure
 	cp ${SCHEMA_PATH} provider/cmd/${PROVIDER}/
 	cd provider/cmd/${PROVIDER}/ && \
        		yarn install && \
-       		yarn tsc && \
+       		yarn run tsc && \
        		cp package.json schema.json ./bin && \
        		sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" bin/package.json
 
@@ -49,11 +49,11 @@ install_provider:: build_provider
 dist:: PKG_ARGS := --no-bytecode --public-packages "*" --public
 dist:: build_provider
 	cd provider/cmd/${PROVIDER}/ && \
- 		yarn run pkg . ${PKG_ARGS} --target node16-macos-x64 --output ../../../bin/darwin-amd64/${PROVIDER} && \
- 		yarn run pkg . ${PKG_ARGS} --target node16-macos-arm64 --output ../../../bin/darwin-arm64/${PROVIDER} && \
- 		yarn run pkg . ${PKG_ARGS} --target node16-linuxstatic-x64 --output ../../../bin/linux-amd64/${PROVIDER} && \
- 		yarn run pkg . ${PKG_ARGS} --target node16-linuxstatic-arm64 --output ../../../bin/linux-arm64/${PROVIDER} && \
- 		yarn run pkg . ${PKG_ARGS} --target node16-win-x64 --output ../../../bin/windows-amd64/${PROVIDER}.exe
+ 		yarn run . ${PKG_ARGS} --target node16-macos-x64 --output ../../../bin/darwin-amd64/${PROVIDER} && \
+ 		yarn run . ${PKG_ARGS} --target node16-macos-arm64 --output ../../../bin/darwin-arm64/${PROVIDER} && \
+ 		yarn run . ${PKG_ARGS} --target node16-linuxstatic-x64 --output ../../../bin/linux-amd64/${PROVIDER} && \
+ 		yarn run . ${PKG_ARGS} --target node16-linuxstatic-arm64 --output ../../../bin/linux-arm64/${PROVIDER} && \
+ 		yarn run . ${PKG_ARGS} --target node16-win-x64 --output ../../../bin/windows-amd64/${PROVIDER}.exe
 	mkdir -p dist
 	tar --gzip -cf ./dist/pulumi-resource-${PACK}-v${VERSION}-linux-amd64.tar.gz README.md LICENSE -C bin/linux-amd64/ .
 	tar --gzip -cf ./dist/pulumi-resource-${PACK}-v${VERSION}-linux-arm64.tar.gz README.md LICENSE -C bin/linux-arm64/ .
@@ -86,7 +86,8 @@ build_dotnet_sdk:: DOTNET_VERSION := $(shell pulumictl get version --language do
 build_dotnet_sdk:: gen_dotnet_sdk
 	cd sdk/dotnet/ && \
 		echo "${DOTNET_VERSION}" >version.txt && \
-		dotnet build /p:Version=${DOTNET_VERSION}
+		cp ../../README.md ../../LICENSE . && \
+		dotnet build /p:Version=${DOTNET_VERSION} 
 
 install_dotnet_sdk:: build_dotnet_sdk
 	rm -rf ${WORKING_DIR}/nuget
@@ -98,15 +99,15 @@ install_dotnet_sdk:: build_dotnet_sdk
 
 gen_nodejs_sdk::
 	rm -rf sdk/nodejs
-	pulumi package gen-sdk bin/pulumi-resource-clouddns --language nodejs
+	pulumi package gen-sdk ./bin/${PROVIDER} --language nodejs
 
 build_nodejs_sdk:: gen_nodejs_sdk
 	cd sdk/nodejs/ && \
-		yarn install && \
+		yarn install  && \
 		yarn run tsc --version && \
 		yarn run tsc && \
 		cp -R scripts/ bin && \
-		cp ../../README.md ../../LICENSE package.json yarn.lock ./bin/ && \
+		cp ../../README.md ../../LICENSE package.json ./bin/ && \
 		sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./bin/package.json && \
 		rm ./bin/package.json.bak
 

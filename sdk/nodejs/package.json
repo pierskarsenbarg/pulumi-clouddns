@@ -1,11 +1,12 @@
 {
-    "name": "@pulumi/clouddns",
+    "name": "@pierskarsenbarg/clouddns",
     "version": "${VERSION}",
     "scripts": {
         "build": "tsc",
         "install": "node scripts/install-pulumi-plugin.js resource clouddns ${VERSION}"
     },
     "dependencies": {
+        "@pulumi/akamai": "^4.4.0",
         "@pulumi/aws": "^5.0.0",
         "@pulumi/pulumi": "^3.42.0"
     },
