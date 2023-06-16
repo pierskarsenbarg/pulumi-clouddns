@@ -17,8 +17,6 @@ RUN apt-get update -y && \
   # Get all of the signatures we need all at once.
   curl -fsSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key  | apt-key add - && \
   curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg              | apt-key add - && \
-  # curl -fsSL https://download.docker.com/linux/debian/gpg          | apt-key add - && \
-  # curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
   curl -fsSL https://packages.microsoft.com/keys/microsoft.asc     | apt-key add - && \
   # AWS v2 cli
   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
@@ -29,19 +27,10 @@ RUN apt-get update -y && \
   # Add additional apt repos all at once
   echo "deb https://deb.nodesource.com/node_16.x $(lsb_release -cs) main"                         | tee /etc/apt/sources.list.d/node.list             && \
   echo "deb https://dl.yarnpkg.com/debian/ stable main"                                           | tee /etc/apt/sources.list.d/yarn.list             && \
-#   echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"      | tee /etc/apt/sources.list.d/docker.list           && \
-#   echo "deb http://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -cs) main"               | tee /etc/apt/sources.list.d/google-cloud-sdk.list && \
-#   echo "deb http://apt.kubernetes.io/ kubernetes-xenial main"                                     | tee /etc/apt/sources.list.d/kubernetes.list       && \
-  # echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/azure.list            && \
-  # apt-key --keyring /etc/apt/trusted.gpg.d/Microsoft.gpg adv --keyserver packages.microsoft.com --recv-keys BC528686B50D79E339D3721CEB3E94ADBE1229CF && \
 #   Install second wave of dependencies
   apt-get update -y && \
   apt-get install -y \
   # Pin azure-cli to 2.33.1 as workaround for https://github.com/pulumi/pulumi-docker-containers/issues/106
-  # azure-cli \
-#   docker-ce \
-#   google-cloud-sdk \
-#   google-cloud-sdk-gke-gcloud-auth-plugin \
   nodejs \
   yarn && \
   curl -sL https://aka.ms/InstallAzureCLIDeb | bash && \
@@ -64,9 +53,6 @@ ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 ARG PULUMI_VERSION
 
 # Install the Pulumi SDK, including the CLI and language runtimes.
-# RUN curl -fsSL https://get.pulumi.com/ | bash -s -- --version $PULUMI_VERSION && \
-#   mv ~/.pulumi/bin/* /usr/bin
-
 RUN curl -fsSL https://get.pulumi.com/ | bash -s -- && \
   mv ~/.pulumi/bin/* /usr/bin
 
