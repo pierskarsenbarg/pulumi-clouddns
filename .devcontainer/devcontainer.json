@@ -1,0 +1,38 @@
+{
+    "name": "CloudDNS",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            "USER_NAME": "user",
+            "USER_UID": "1000"
+        }
+    },
+    "containerEnv": {
+        "PULUMI_ACCESS_TOKEN": "${localEnv:PULUMI_ACCESS_TOKEN}"
+    },
+	"remoteUser": "user",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"formulahendry.dotnet",
+				"aaron-bond.better-comments",
+				"ms-azuretools.vscode-bicep",
+				"ms-dotnettools.csharp",
+				"jchannon.csharpextensions",
+				"dracula-theme.theme-dracula",
+				"GitHub.vscode-pull-request-github",
+				"GitHub.remotehub",
+				"michelemelluso.gitignore",
+				"golang.go",
+				"ms-vsliveshare.vsliveshare",
+				"ms-vsliveshare.vsliveshare-pack",
+				"ms-vscode.makefile-tools",
+				"eg2.vscode-npm-script",
+				"esbenp.prettier-vscode",
+				"pulumi.pulumi-lsp-client",
+				"dbaeumer.vscode-eslint"
+			]
+		}
+	}
+    
+}
