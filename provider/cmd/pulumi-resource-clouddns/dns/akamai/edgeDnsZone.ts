@@ -8,5 +8,9 @@ interface DnsZoneArgs {
 export class EdgeDnsZone extends ComponentResource {
     constructor(name: string, args: DnsZoneArgs, opts?: ComponentResourceOptions){
         super("clouddns:index:EdgeDnsZone", name, args, opts);
+
+        const domainName: string = args.domainName;
+
+       
     }
 }
