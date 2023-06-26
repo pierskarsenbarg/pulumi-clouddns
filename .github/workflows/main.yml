@@ -1,0 +1,13 @@
+env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+name: main
+"on":
+    push:
+    branches:
+    - main
+    paths-ignore:
+    - CHANGELOG.md
+    tags-ignore:
+    - v*
+    - sdk/*
+    - '**'
