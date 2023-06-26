@@ -11,7 +11,7 @@ env:
             - v*
             - sdk/*
             - '**'
-
+name: main
 jobs:
     build_provider:
         runs-on: ubuntu-latest
