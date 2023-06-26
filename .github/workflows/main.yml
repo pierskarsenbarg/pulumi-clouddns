@@ -3,14 +3,14 @@ env:
 name: main
 "on":
     push:
-    branches:
-    - main
-    paths-ignore:
-    - CHANGELOG.md
-    tags-ignore:
-    - v*
-    - sdk/*
-    - '**'
+      branches:
+      - main
+      paths-ignore:
+      - CHANGELOG.md
+      tags-ignore:
+      - v*
+      - sdk/*
+      - '**'
 jobs:
     build_provider:
         runs-on: ubuntu-latest
