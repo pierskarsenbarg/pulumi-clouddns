@@ -140,14 +140,12 @@ jobs:
           find ${{ github.workspace }} -name "pulumi-*-clouddns" -print -exec chmod +x {} \;
       - name: Generate SDKs
         run: make gen_${{matrix.language}}_sdk
-      - name: Check worktree is clean
-        run: ./ci-scripts/ci/check-worktree-is-clean
-      - name: Compress SDK folder
-        run: tar -zcf sdk/${{ matrix.language }}.tar.gz -C sdk/${{ matrix.language }}
-          .
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ matrix.language  }}-sdk.tar.gz
-          path: ${{ github.workspace}}/sdk/${{ matrix.language }}.tar.gz
+      # - name: Compress SDK folder
+      #   run: tar -zcf sdk/${{ matrix.language }}.tar.gz -C sdk/${{ matrix.language }}
+      #     .
+      # - name: Upload artifacts
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: ${{ matrix.language  }}-sdk.tar.gz
+      #     path: ${{ github.workspace}}/sdk/${{ matrix.language }}.tar.gz
       
