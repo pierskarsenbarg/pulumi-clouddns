@@ -59,7 +59,8 @@ jobs:
       - name: Create package for artifact upload
         run: |
           mkdir -p ${{ github.workspace}}/upload
-          tar --gzip -cf ${{ github.workspace}}/upload/upload.tar.gz ${{ github.workspace}}/bin/pulumi-resource-clouddns ${{ github.workspace}}/schema.json
+          cp ${{ github.workspace}}/schema.json ${{ github.workspace}}/bin
+          tar -zcf ${{ github.workspace}}/upload/upload.tar.gz -C ${{ github.workspace}}/bin
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
