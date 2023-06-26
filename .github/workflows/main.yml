@@ -63,7 +63,7 @@ jobs:
             - name: Upload artifacts
               uses: actions/upload-artifact@v3
               with:
-                  name: upload.tar.gz
+                  name: provider-binary.tar.gz
                   path: ${{ github.workspace}}/upload/upload.tar.gz
     build_sdks:
         needs: build_provider
