@@ -60,6 +60,11 @@ jobs:
         run: |
           mkdir -p ${{ github.workspace}}/upload
           tar --gzip -cf ${{ github.workspace}}/upload/upload.tar.gz ${{ github.workspace}}/bin/pulumi-resource-clouddns ${{ github.workspace}}/schema.json
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: upload.tar.gz
+          path: ${{ github.workspace}}/upload/upload.tar.gz 
   # build_sdks:
   #   runs-on: ubuntu-latest
   #   strategy:
