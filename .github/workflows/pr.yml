@@ -61,12 +61,11 @@ jobs:
       - name: Unshallow clone for tags
         run: git fetch --prune --unshallow --tags
       - name: Build provider binary and package up
-        run: make dist
-      - name: Upload provider binaries
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ matrix.arch  }}.tar.gz
-          path: ${{ github.workspace}}/dist/pulumi-resource-clouddns-v${{ env.PR_COMMIT_SHA }}-${{matrix.arch}}.tar.gz
+        run: make install_provider
+      - name: Create package for artifact upload
+        run: |
+          mkdir -p ${{ github.workspace}}/upload
+          tar --gzip -cf ${{ github.workspace}}/upload/upload.tar.gz ${{ github.workspace}}/bin/pulumi-resource-clouddns ${{ github.workspace}}/schema.json
   # build_sdks:
   #   runs-on: ubuntu-latest
   #   strategy:
