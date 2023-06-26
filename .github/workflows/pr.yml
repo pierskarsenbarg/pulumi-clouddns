@@ -60,7 +60,7 @@ jobs:
         run: |
           mkdir -p ${{ github.workspace}}/upload
           cp ${{ github.workspace}}/schema.json ${{ github.workspace}}/bin
-          tar -zcf ${{ github.workspace}}/upload/upload.tar.gz -C ${{ github.workspace}}/bin
+          tar -zcf ${{ github.workspace}}/upload/upload.tar.gz ${{ github.workspace}}/bin
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
