@@ -1,0 +1,144 @@
+name: PR
+"on":
+  pull_request:
+    types: 
+      - labeled
+      - unlabeled
+      - synchronize
+      - opened
+      - edited
+      - ready_for_review
+      - reopened
+      - unlocked
+    branches:
+    - main
+jobs:
+  build_provider:
+    runs-on: ubuntu-latest
+    strategy: 
+      fail-fast: true
+      matrix:
+        nodeversion:
+          - 16.x
+        goversion:
+          - 1.19.x
+        arch:
+          - linux-amd64
+          - linux-arm64
+          - darwin-amd64
+          - darwin-arm64
+          - windows-amd64
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v4
+        with: 
+          go-version: ${{matrix.goversion}}
+          cache-dependency-path: provider/go.sum
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{matrix.nodeversion}}
+      - name: Install Pulumi CLI
+        uses: pulumi/actions@v4
+        with:
+          pulumi-version: 3.72.0
+      - name: Pulumi Version
+        run: pulumi version
+      - name: Install pulumictl
+        uses: jaxxstorm/action-install-gh-release@v1.10.0
+        with:
+          repo: pulumi/pulumictl
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ env.PR_COMMIT_SHA }}
+      - name: Checkout Scripts Repo
+        uses: actions/checkout@v3
+        with:
+          path: ci-scripts
+          repository: jaxxstorm/scripts
+          ref: third_party
+      - name: Unshallow clone for tags
+        run: git fetch --prune --unshallow --tags
+      - name: Build provider binary and package up
+        run: make dist
+      - name: Upload provider binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.arch  }}.tar.gz
+          path: ${{ github.workspace}}/dist/pulumi-resource-clouddns-v${{ env.PR_COMMIT_SHA }}-${{matrix.arch}}.tar.gz
+  # build_sdks:
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     fail-fast: true
+  #     matrix:
+  #       nodeversion:
+  #         - 16.x
+  #       goversion:
+  #         - 1.19.x
+  #       dotnetversion:
+  #         - 6.0.302
+  #       pythonversion:
+  #         - 3.7
+  #       language:
+  #         - nodejs
+  #         - python
+  #         - dotnet 
+  #         - go
+  #   steps:
+  #     - name: Install Go
+  #       uses: actions/setup-go@v4
+  #       with: 
+  #         go-version: ${{matrix.goversion}}
+  #         cache-dependency-path: provider/go.sum
+  #     - name: Install NodeJS
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: ${{matrix.nodeversion}}
+  #     - if: ${{ matrix.language == 'dotnet' }}
+  #       name: Setup DotNet
+  #       uses: actions/setup-dotnet@v3
+  #       with:
+  #         dotnet-version: ${{matrix.dotnetversion}}
+  #     - if: ${{ matrix.language == 'python' }}
+  #       name: Setup Python
+  #       uses: actions/setup-python@v4
+  #       with:
+  #         python-version: ${{matrix.pythonversion}}
+  #     - name: Install Pulumi CLI
+  #       uses: pulumi/actions@v4
+  #       with:
+  #         pulumi-version: 3.72.0
+  #     - name: Pulumi Version
+  #       run: pulumi version
+  #     - name: Install pulumictl
+  #       uses: jaxxstorm/action-install-gh-release@v1.10.0
+  #       with:
+  #         repo: pulumi/pulumictl
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+  #       with:
+  #         ref: ${{ env.PR_COMMIT_SHA }}
+  #     - name: Checkout Scripts Repo
+  #       uses: actions/checkout@v3
+  #       with:
+  #         path: ci-scripts
+  #         repository: jaxxstorm/scripts
+  #         ref: third_party
+  #     - name: Unshallow clone for tags
+  #       run: git fetch --prune --unshallow --tags
+  #     - name: Build provider binary and package up
+  #       run: make dist
+  #     - name: Generate SDKs
+  #       run: make gen_${{matrix.language}}_sdk
+  #     - name: Check worktree is clean
+  #       run: ./ci-scripts/ci/check-worktree-is-clean
+  #     - name: Compress SDK folder
+  #       run: tar -zcf sdk/${{ matrix.language }}.tar.gz -C sdk/${{ matrix.language }}
+  #         .
+  #     - name: Upload artifacts
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: ${{ matrix.language  }}-sdk.tar.gz
+  #         path: ${{ github.workspace}}/sdk/${{ matrix.language }}.tar.gz
+      

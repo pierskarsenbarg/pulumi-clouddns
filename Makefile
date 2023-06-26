@@ -47,7 +47,7 @@ install_provider:: build_provider
 
 # builds all providers required for publishing
 dist:: PKG_ARGS := --no-bytecode --public-packages "*" --public
-dist:: build_provider
+dist:: install_provider
 	cd provider/cmd/${PROVIDER}/ && \
  		yarn run . ${PKG_ARGS} --target node16-macos-x64 --output ../../../bin/darwin-amd64/${PROVIDER} && \
  		yarn run . ${PKG_ARGS} --target node16-macos-arm64 --output ../../../bin/darwin-arm64/${PROVIDER} && \
