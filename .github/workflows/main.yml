@@ -11,6 +11,129 @@ name: main
     - v*
     - sdk/*
     - '**'
-# jobs:
-    # build_provider:
-         
+jobs:
+    build_provider:
+        runs-on: ubuntu-latest
+        strategy: 
+          fail-fast: true
+          matrix:
+            nodeversion:
+              - 16.x
+            goversion:
+              - 1.19.x
+        steps:
+          - name: Install Go
+            uses: actions/setup-go@v4
+            with: 
+              go-version: ${{matrix.goversion}}
+              cache-dependency-path: provider/go.sum
+          - name: Install NodeJS
+            uses: actions/setup-node@v3
+            with:
+              node-version: ${{matrix.nodeversion}}
+          - name: Install Pulumi CLI
+            uses: pulumi/actions@v4
+            with:
+              pulumi-version: ${{ env.PULUMI_VERSION }}
+          - name: Pulumi Version
+            run: pulumi version
+          - name: Install pulumictl
+            uses: jaxxstorm/action-install-gh-release@v1.10.0
+            with:
+              repo: pulumi/pulumictl
+          - name: Checkout code
+            uses: actions/checkout@v3
+            with:
+              ref: ${{ env.PR_COMMIT_SHA }}
+          - name: Checkout Scripts Repo
+            uses: actions/checkout@v3
+            with:
+              path: ci-scripts
+              repository: jaxxstorm/scripts
+              ref: third_party
+          - name: Unshallow clone for tags
+            run: git fetch --prune --unshallow --tags
+          - name: Build provider binary and package up
+            run: make install_provider
+          - name: Create package for artifact upload
+            run: |
+              mkdir -p ${{ github.workspace}}/upload
+              tar -zcf upload/upload.tar.gz -C ${{ github.workspace}}/bin .
+          - name: Upload artifacts
+            uses: actions/upload-artifact@v3
+            with:
+              name: upload.tar.gz
+              path: ${{ github.workspace}}/upload/upload.tar.gz        
+      build_sdks:
+        needs: build_provider
+        runs-on: ubuntu-latest
+        strategy:
+          fail-fast: true
+          matrix:
+            nodeversion:
+              - 16.x
+            goversion:
+              - 1.19.x
+            dotnetversion:
+              - 6.0.302
+            pythonversion:
+              - 3.7
+            language:
+              - nodejs
+              - python
+              - dotnet 
+              - go
+        steps:
+          - if: ${{ matrix.language == 'go' }}
+            name: Install Go
+            uses: actions/setup-go@v4
+            with: 
+              go-version: ${{matrix.goversion}}
+              cache-dependency-path: provider/go.sum
+          - name: Install NodeJS
+            uses: actions/setup-node@v3
+            with:
+              node-version: ${{matrix.nodeversion}}
+          - if: ${{ matrix.language == 'dotnet' }}
+            name: Setup DotNet
+            uses: actions/setup-dotnet@v3
+            with:
+              dotnet-version: ${{matrix.dotnetversion}}
+          - if: ${{ matrix.language == 'python' }}
+            name: Setup Python
+            uses: actions/setup-python@v4
+            with:
+              python-version: ${{matrix.pythonversion}}
+          - name: Install Pulumi CLI
+            uses: pulumi/actions@v4
+            with:
+              pulumi-version: ${{ env.PULUMI_VERSION }}
+          - name: Pulumi Version
+            run: pulumi version
+          - name: Install pulumictl
+            uses: jaxxstorm/action-install-gh-release@v1.10.0
+            with:
+              repo: pulumi/pulumictl
+          - name: Checkout code
+            uses: actions/checkout@v3
+            with:
+              ref: ${{ env.PR_COMMIT_SHA }}
+          - name: Checkout Scripts Repo
+            uses: actions/checkout@v3
+            with:
+              path: ci-scripts
+              repository: jaxxstorm/scripts
+              ref: third_party
+          - name: Unshallow clone for tags
+            run: git fetch --prune --unshallow --tags
+          - name: Download provider binaries
+            uses: actions/download-artifact@v3
+            with: 
+              name: upload.tar.gz
+              path: ${{github.workspace}}/bin
+          - name: Untar provider binaries
+            run: |-
+              tar -zxf ${{ github.workspace }}/bin/upload.tar.gz -C ${{ github.workspace}}/bin
+              find ${{ github.workspace }} -name "pulumi-*-clouddns" -print -exec chmod +x {} \;
+          - name: Generate SDKs
+            run: make gen_${{matrix.language}}_sdk
