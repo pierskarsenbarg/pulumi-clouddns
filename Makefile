@@ -36,7 +36,7 @@ build_provider:: ensure
 	cp ${SCHEMA_PATH} provider/cmd/${PROVIDER}/
 	cd provider/cmd/${PROVIDER}/ && \
        		yarn install && \
-       		yarn run tsc && \
+       		npx tsc && \
        		cp package.json schema.json ./bin && \
        		sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" bin/package.json
 

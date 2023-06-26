@@ -30,7 +30,6 @@ RUN apt-get update -y && \
 #   Install second wave of dependencies
   apt-get update -y && \
   apt-get install -y \
-  # Pin azure-cli to 2.33.1 as workaround for https://github.com/pulumi/pulumi-docker-containers/issues/106
   nodejs \
   yarn && \
   curl -sL https://aka.ms/InstallAzureCLIDeb | bash && \
@@ -62,6 +61,15 @@ RUN version=0.0.25 \
     && tar -xzf pulumictl-v$version-linux-amd64.tar.gz --directory /usr/local/bin --no-same-owner pulumictl \
     && rm -f pulumictl-v$version-linux-amd64.tar.gz \
     && pulumictl version
+
+# Install dotnet 6.0 using instructions from:
+# https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script
+RUN mkdir -p /home/dotnet && curl -fsSL https://dot.net/v1/dotnet-install.sh | bash -s -- -channel 6.0 --install-dir /home/dotnet
+ENV PATH "/home/dotnet:${PATH}"
+ENV DOTNET_ROOT /home/dotnet
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT 1
+# Allow newer dotnet version (e.g. 6) to build projects targeting older frameworks (v3.1)
+ENV DOTNET_ROLL_FORWARD Major
 
 # Add non-root user
 ARG USER_NAME=user
