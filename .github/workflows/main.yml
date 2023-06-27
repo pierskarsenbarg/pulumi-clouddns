@@ -64,7 +64,7 @@ jobs:
               uses: actions/upload-artifact@v3
               with:
                   name: provider-binary.tar.gz
-                  path: ${{ github.workspace}}/upload/upload.tar.gz
+                  path: ${{ github.workspace}}/upload/provider-binary.tar.gz
     build_sdks:
         needs: build_provider
         runs-on: ubuntu-latest
@@ -130,7 +130,7 @@ jobs:
             - name: Download provider binaries
               uses: actions/download-artifact@v3
               with: 
-                name: upload.tar.gz
+                name: provider-binary.tar.gz
                 path: ${{github.workspace}}/bin
             - name: Untar provider binaries
               run: |-

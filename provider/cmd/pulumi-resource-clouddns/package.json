@@ -3,8 +3,8 @@
     "version": "${VERSION}",
     "bin": "bin/index.js",
     "dependencies": {
-        "@pulumi/akamai": "^4.4.0",
         "@pulumi/aws": "^5.0.0",
+        "@pulumi/cloudflare": "^5.4.1",
         "@pulumi/pulumi": "^3.38.0"
     },
     "devDependencies": {
