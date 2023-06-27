@@ -59,7 +59,7 @@ jobs:
             - name: Create package for artifact upload
               run: |
                   mkdir -p ${{ github.workspace}}/upload
-                  tar -zcf upload/upload.tar.gz -C ${{ github.workspace}}/bin .
+                  tar -zcf upload/provider-binary.tar.gz -C ${{ github.workspace}}/bin .
             - name: Upload artifacts
               uses: actions/upload-artifact@v3
               with:
@@ -134,7 +134,7 @@ jobs:
                 path: ${{github.workspace}}/bin
             - name: Untar provider binaries
               run: |-
-                tar -zxf ${{ github.workspace }}/bin/upload.tar.gz -C ${{ github.workspace}}/bin
+                tar -zxf ${{ github.workspace }}/bin/provider-binary.tar.gz -C ${{ github.workspace}}/bin
                 find ${{ github.workspace }} -name "pulumi-*-clouddns" -print -exec chmod +x {} \;
             - name: Generate SDKs
               run: make gen_${{matrix.language}}_sdk
