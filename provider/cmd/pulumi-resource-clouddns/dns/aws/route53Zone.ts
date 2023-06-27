@@ -1,14 +1,15 @@
 import {ComponentResource, ComponentResourceOptions, Output} from "@pulumi/pulumi";
 import {Zone} from "@pulumi/aws/route53";
+import {Provider} from "@pulumi/aws";
 
 interface Route53ZoneArgs {
-    domainName: string
+    domainName: string;
+    awsProvider: Provider;
 }
 
 export class Route53Zone extends ComponentResource {
-    public readonly hostedZoneId: Output<string>;
+    public readonly zoneId: Output<string>;
     public readonly nameServers: Output<string[]>;
-    public readonly primaryNameServer: Output<string>;
     constructor(name: string, args: Route53ZoneArgs, opts?: ComponentResourceOptions) {
         super("clouddns:index:Route53Zone", name, args, opts);
 
@@ -18,22 +19,28 @@ export class Route53Zone extends ComponentResource {
             throw new Error("You must specify a [domainName]");
         }
 
+        let resourceOpts: ComponentResourceOptions = {
+            parent: this,
+            provider: args.awsProvider
+        }
+
         if (opts !== undefined) {
-            opts = {parent: this, ...opts};
+            resourceOpts = {
+                ...resourceOpts,
+                ...opts
+            };
         }
 
         const hostedZone = new Zone(`${name}-route53zone`, {
             name: domainName
-        }, opts);
+        }, resourceOpts);
 
-        this.hostedZoneId = hostedZone.zoneId;
+        this.zoneId = hostedZone.zoneId;
         this.nameServers = hostedZone.nameServers;
-        this.primaryNameServer = hostedZone.primaryNameServer;
 
         this.registerOutputs({
-            "HostedZoneId": this.hostedZoneId,
+            "HostedZoneId": this.zoneId,
             "NameServers": this.nameServers,
-            "PrimaryNameServer": this.primaryNameServer
         });
     }
 }
