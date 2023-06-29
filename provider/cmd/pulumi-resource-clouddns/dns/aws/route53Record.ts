@@ -1,4 +1,4 @@
-import {ComponentResource, ComponentResourceOptions, Output} from "@pulumi/pulumi";
+import {ComponentResource, ComponentResourceOptions, Output, ResourceOptions} from "@pulumi/pulumi";
 import {Record, RecordType} from "@pulumi/aws/route53";
 import {Provider} from "@pulumi/aws";
 
@@ -20,7 +20,7 @@ export class Route53Record extends ComponentResource {
         const recordType: RecordType = args.recordType;
         const recordName: string = args.recordName;
 
-        let resourceOptions: ComponentResourceOptions = {
+        let resourceOptions: ResourceOptions = {
             parent: this,
             provider: args.awsProvider,
         };

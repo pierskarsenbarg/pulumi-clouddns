@@ -1,4 +1,4 @@
-import {ComponentResource, ComponentResourceOptions} from "@pulumi/pulumi";
+import {ComponentResource, ComponentResourceOptions, ResourceOptions} from "@pulumi/pulumi";
 import {Provider, Record} from "@pulumi/cloudflare";
 
 interface CloudflareRecordArgs {
@@ -15,12 +15,24 @@ export class CloudflareRecord extends ComponentResource {
     constructor(name: string, args: CloudflareRecordArgs, opts?: ComponentResourceOptions) {
         super("clouddns:index:cloudFlareZone", name, args, opts);
 
+        let resourceOptions: ResourceOptions = {
+            parent: this,
+            provider: args.cloudflareProvider,
+        };
+
+        if(opts !== undefined) {
+            resourceOptions = {
+                ...opts,
+                ...resourceOptions
+            }
+        }
+
         new Record("cloudflarerecord", {
             zoneId: args.zoneId,
             name: args.recordName,
             value: args.value,
             type: args.type,
             ttl: args.ttl
-        }, {provider: args.cloudflareProvider})
+        }, resourceOptions)
     }
 }

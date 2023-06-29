@@ -1,4 +1,4 @@
-import {ComponentResource, ComponentResourceOptions, Output} from "@pulumi/pulumi";
+import {ComponentResource, ComponentResourceOptions, Output, ResourceOptions} from "@pulumi/pulumi";
 import {Zone} from "@pulumi/aws/route53";
 import {Provider} from "@pulumi/aws";
 
@@ -19,7 +19,7 @@ export class Route53Zone extends ComponentResource {
             throw new Error("You must specify a [domainName]");
         }
 
-        let resourceOpts: ComponentResourceOptions = {
+        let resourceOpts: ResourceOptions = {
             parent: this,
             provider: args.awsProvider
         }
