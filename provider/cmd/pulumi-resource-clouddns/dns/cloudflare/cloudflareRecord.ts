@@ -1,4 +1,4 @@
-import {ComponentResource, ComponentResourceOptions} from "@pulumi/pulumi";
+import {ComponentResource, ComponentResourceOptions, ResourceOptions} from "@pulumi/pulumi";
 import {Provider, Record} from "@pulumi/cloudflare";
 
 interface CloudflareRecordArgs {

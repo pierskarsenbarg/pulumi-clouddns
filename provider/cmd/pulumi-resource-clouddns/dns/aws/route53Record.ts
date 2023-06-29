@@ -1,4 +1,4 @@
-import {ComponentResource, ComponentResourceOptions, Output} from "@pulumi/pulumi";
+import {ComponentResource, ComponentResourceOptions, Output, ResourceOptions} from "@pulumi/pulumi";
 import {Record, RecordType} from "@pulumi/aws/route53";
 import {Provider} from "@pulumi/aws";
 
