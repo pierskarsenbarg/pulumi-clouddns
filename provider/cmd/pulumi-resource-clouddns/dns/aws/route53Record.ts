@@ -20,7 +20,7 @@ export class Route53Record extends ComponentResource {
         const recordType: RecordType = args.recordType;
         const recordName: string = args.recordName;
 
-        let resourceOptions: ComponentResourceOptions = {
+        let resourceOptions: ResourceOptions = {
             parent: this,
             provider: args.awsProvider,
         };

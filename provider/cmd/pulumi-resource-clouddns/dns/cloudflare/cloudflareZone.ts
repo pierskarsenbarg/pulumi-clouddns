@@ -1,4 +1,4 @@
-import {ComponentResource, ComponentResourceOptions, Output} from "@pulumi/pulumi";
+import {ComponentResource, ComponentResourceOptions, Output, ResourceOptions} from "@pulumi/pulumi";
 import {Provider, Zone} from "@pulumi/cloudflare";
 
 interface CloudflareZoneArgs {
@@ -13,10 +13,22 @@ export class CloudflareZone extends ComponentResource {
     constructor(name: string, args: CloudflareZoneArgs, opts?: ComponentResourceOptions) {
         super("clouddns:index:cloudFlareZone", name, args, opts);
 
+        let resourceOptions: ResourceOptions = {
+            parent: this,
+            provider: args.cloudflareProvider,
+        };
+
+        if(opts !== undefined) {
+            resourceOptions = {
+                ...opts,
+                ...resourceOptions
+            }
+        }
+
         const zone = new Zone("cloudflareZone", {
             accountId: args.cloudflareAccountId,
             zone: args.zone
-        }, {provider: args.cloudflareProvider});
+        }, resourceOptions);
 
         this.ZoneId = zone.id;
         this.NameServers = zone.nameServers;
