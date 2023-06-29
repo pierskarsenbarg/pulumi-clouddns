@@ -34,7 +34,7 @@
             "packageReferences": {
                 "Pulumi": "3.*",
                 "Pulumi.Aws": "5.*",
-                "Pulumi.Akamai": "4.*"
+                "Pulumi.CloudFlare": "5.*"
             },
             "respectSchemaVersion": true
         },
@@ -47,7 +47,7 @@
             "packageName": "@pierskarsenbarg/clouddns",
             "dependencies": {
                 "@pulumi/aws": "^5.0.0",
-                "@pulumi/akamai": "^4.4.0"
+                "@pulumi/cloudflare": "^5.5.0"
             },
             "devDependencies": {
                 "typescript": "^3.7.0"
@@ -58,7 +58,7 @@
             "requires": {
                 "pulumi": ">=3.0.0,<4.0.0",
                 "pulumi-aws": ">=5.0.0,<6.0.0",
-                "pulumi-akamai": ">=4.0.0,<5.0.0"
+                "pulumi-cloudflare": ">=5.0.0,<6.0.0"
             },
             "respectSchemaVersion": true,
             "packageName": "pierskarsenbarg_pulumi_clouddns"
