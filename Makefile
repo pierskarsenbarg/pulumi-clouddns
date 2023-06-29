@@ -23,12 +23,7 @@ ensure::
 	
 # Tidy up SDKs
 clean::
-	rm -rf sdk/dotnet
-	rm -rf sdk/go
-	rm -rf sdk/nodejs
-	rm -rf sdk/python
-	rm -rf bin dist node_modules nuget
-	git clean -fdx
+	git clean -fdX
 
 
 # Provider
