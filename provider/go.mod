@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/pkg/errors v0.9.1
-	github.com/pulumi/pulumi/pkg/v3 v3.73.0
+	github.com/pulumi/pulumi/pkg/v3 v3.74.0
 )
 
 require (
@@ -147,7 +147,7 @@ require (
 	github.com/pkg/browser v0.0.0-20210115035449-ce105d075bb4 // indirect
 	github.com/pkg/term v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/pulumi/pulumi/sdk/v3 v3.73.0 // indirect
+	github.com/pulumi/pulumi/sdk/v3 v3.74.0 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/rogpeppe/go-internal v1.9.0 // indirect
 	github.com/ryanuber/go-glob v1.0.0 // indirect
