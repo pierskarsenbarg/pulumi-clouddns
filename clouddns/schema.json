@@ -1,0 +1,89 @@
+{
+    "name": "clouddns",
+    "types": {
+        "clouddns:index:target": {
+            "type": "string",
+            "enum": [
+                {
+                    "name": "aws",
+                    "description": "AWS Route53",
+                    "value": "aws"
+                },
+                {
+                    "name": "cloudflare",
+                    "description": "CloudFlare DNS",
+                    "value": "cloudflare"
+                },
+                {
+                    "name": "digitalocean",
+                    "description": "Digital Ocean DNS",
+                    "value": "digitalocean"
+                }
+            ]
+        }
+    },
+    "resources": {
+        "clouddns:index:StaticPage": {
+            "isComponent": true,
+            "inputProperties": {
+                "indexContent": {
+                    "type": "string",
+                    "description": "The HTML content for index.html."
+                }
+            },
+            "requiredInputs": [
+                "indexContent"
+            ],
+            "properties": {
+                "bucket": {
+                    "$ref": "/aws/v5.0.0/schema.json#/resources/aws:s3%2Fbucket:Bucket",
+                    "description": "The bucket resource."
+                },
+                "websiteUrl": {
+                    "type": "string",
+                    "description": "The website URL."
+                }
+            },
+            "required": [
+                "bucket",
+                "websiteUrl"
+            ]
+        }
+    },
+    "language": {
+        "csharp": {
+            "rootNamespace": "PiersKarsenbarg",
+            "packageReferences": {
+                "Pulumi": "3.*",
+                "Pulumi.Aws": "5.*",
+                "Pulumi.CloudFlare": "5.*"
+            },
+            "respectSchemaVersion": true
+        },
+        "go": {
+            "generateResourceContainerTypes": true,
+            "importBasePath": "github.com/pierskarsenbarg/pulumi-clouddns/sdk/go/clouddns",
+            "respectSchemaVersion": true
+        },
+        "nodejs": {
+            "packageName": "@pierskarsenbarg/clouddns",
+            "dependencies": {
+                "@pulumi/aws": "^5.0.0",
+                "@pulumi/cloudflare": "^5.5.0"
+            },
+            "devDependencies": {
+                "typescript": "^3.7.0"
+            },
+            "respectSchemaVersion": true
+        },
+        "python": {
+            "requires": {
+                "pulumi": ">=3.0.0,<4.0.0",
+                "pulumi-aws": ">=5.0.0,<6.0.0",
+                "pulumi-cloudflare": ">=5.0.0,<6.0.0"
+            },
+            "respectSchemaVersion": true,
+            "packageName": "pierskarsenbarg_pulumi_clouddns"
+        }
+    }
+}
