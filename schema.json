@@ -1,5 +1,27 @@
 {
     "name": "clouddns",
+    "types": {
+        "clouddns:index:target": {
+            "type": "string",
+            "enum": [
+                {
+                    "name": "aws",
+                    "description": "AWS Route53",
+                    "value": "aws"
+                },
+                {
+                    "name": "cloudflare",
+                    "description": "CloudFlare DNS",
+                    "value": "cloudflare"
+                },
+                {
+                    "name": "digitalocean",
+                    "description": "Digital Ocean DNS",
+                    "value": "digitalocean"
+                }
+            ]
+        }
+    },
     "resources": {
         "clouddns:index:StaticPage": {
             "isComponent": true,
