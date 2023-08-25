@@ -23,3 +23,4 @@ ci-scripts/
 /provider/cmd/pulumi-resource-*/schema.json
 
 
+clouddns/schema.json
