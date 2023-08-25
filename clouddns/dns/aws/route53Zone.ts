@@ -1,6 +1,7 @@
 import {ComponentResource, ComponentResourceOptions, Output, ResourceOptions} from "@pulumi/pulumi";
 import {Zone} from "@pulumi/aws/route53";
 import {Provider} from "@pulumi/aws";
+import * as aws from "@pulumi/aws";
 
 interface Route53ZoneArgs {
     domainName: string;

@@ -1,32 +1,29 @@
 {
     "name": "clouddns",
-    "resources": {
-        "clouddns:index:StaticPage": {
-            "isComponent": true,
-            "inputProperties": {
-                "indexContent": {
-                    "type": "string",
-                    "description": "The HTML content for index.html."
-                }
-            },
-            "requiredInputs": [
-                "indexContent"
-            ],
-            "properties": {
-                "bucket": {
-                    "$ref": "/aws/v5.0.0/schema.json#/resources/aws:s3%2Fbucket:Bucket",
-                    "description": "The bucket resource."
+    "types": {
+        "clouddns:index:target": {
+            "type": "string",
+            "enum": [
+                {
+                    "name": "aws",
+                    "description": "AWS Route53",
+                    "value": "aws"
                 },
-                "websiteUrl": {
-                    "type": "string",
-                    "description": "The website URL."
+                {
+                    "name": "cloudflare",
+                    "description": "CloudFlare DNS",
+                    "value": "cloudflare"
+                },
+                {
+                    "name": "digitalocean",
+                    "description": "Digital Ocean DNS",
+                    "value": "digitalocean"
                 }
-            },
-            "required": [
-                "bucket",
-                "websiteUrl"
             ]
         }
+    },
+    "resources": {
+        
     },
     "language": {
         "csharp": {

@@ -22,7 +22,5 @@ ci-scripts/
 # schema for the provider GetSchema gRPC request
 /provider/cmd/pulumi-resource-*/schema.json
 
-sdk/nodejs
-sdk/dotnet
-sdk/python
-sdk/go
+
+clouddns/schema.json

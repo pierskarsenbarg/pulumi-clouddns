@@ -23,18 +23,13 @@ ensure::
 	
 # Tidy up SDKs
 clean::
-	rm -rf sdk/dotnet
-	rm -rf sdk/go
-	rm -rf sdk/nodejs
-	rm -rf sdk/python
-	rm -rf bin dist node_modules nuget
-	git clean -fdx
+	git clean -fdX
 
 
 # Provider
 build_provider:: ensure
-	cp ${SCHEMA_PATH} provider/cmd/${PROVIDER}/
-	cd provider/cmd/${PROVIDER}/ && \
+	cp ${SCHEMA_PATH} ${PACK}
+	cd ${PACK} && \
        		yarn install && \
        		yarn run tsc && \
        		cp package.json schema.json ./bin && \
@@ -42,18 +37,18 @@ build_provider:: ensure
 
 install_provider:: PKG_ARGS := --no-bytecode --public-packages "*" --public
 install_provider:: build_provider
-	cd provider/cmd/${PROVIDER}/ && \
-		yarn run pkg . ${PKG_ARGS} --target node16 --output ../../../bin/${PROVIDER}
+	cd ${PACK} && \
+		yarn run pkg . ${PKG_ARGS} --target node16 --output ../bin/${PROVIDER}
 
 # builds all providers required for publishing
 dist:: PKG_ARGS := --no-bytecode --public-packages "*" --public
 dist:: install_provider
-	cd provider/cmd/${PROVIDER}/ && \
- 		yarn run pkg . ${PKG_ARGS} --target node16-macos-x64 --output ../../../bin/darwin-amd64/${PROVIDER} && \
- 		yarn run pkg . ${PKG_ARGS} --target node16-macos-arm64 --output ../../../bin/darwin-arm64/${PROVIDER} && \
- 		yarn run pkg . ${PKG_ARGS} --target node16-linuxstatic-x64 --output ../../../bin/linux-amd64/${PROVIDER} && \
- 		yarn run pkg . ${PKG_ARGS} --target node16-linuxstatic-arm64 --output ../../../bin/linux-arm64/${PROVIDER} && \
- 		yarn run pkg . ${PKG_ARGS} --target node16-win-x64 --output ../../../bin/windows-amd64/${PROVIDER}.exe
+	cd ${PACK} && \
+ 		yarn run pkg . ${PKG_ARGS} --target node16-macos-x64 --output ../bin/darwin-amd64/${PROVIDER} && \
+ 		yarn run pkg . ${PKG_ARGS} --target node16-macos-arm64 --output ../bin/darwin-arm64/${PROVIDER} && \
+ 		yarn run pkg . ${PKG_ARGS} --target node16-linuxstatic-x64 --output ../bin/linux-amd64/${PROVIDER} && \
+ 		yarn run pkg . ${PKG_ARGS} --target node16-linuxstatic-arm64 --output ../bin/linux-arm64/${PROVIDER} && \
+ 		yarn run pkg . ${PKG_ARGS} --target node16-win-x64 --output ../bin/windows-amd64/${PROVIDER}.exe
 	mkdir -p dist
 	tar --gzip -cf ./dist/pulumi-resource-${PACK}-v${VERSION}-linux-amd64.tar.gz README.md LICENSE -C bin/linux-amd64/ .
 	tar --gzip -cf ./dist/pulumi-resource-${PACK}-v${VERSION}-linux-arm64.tar.gz README.md LICENSE -C bin/linux-arm64/ .
@@ -65,8 +60,12 @@ dist:: install_provider
 
 gen_go_sdk::
 	rm -rf sdk/go
-	cd provider/cmd/${CODEGEN} && go run . go ../../../sdk/go ${SCHEMA_PATH}
+	cd provider-gen && go run . go ../sdk/go ${SCHEMA_PATH}
 	cd sdk && go mod tidy && cd -
+# gen_go_sdk::
+# 	rm -rf sdk/go
+# 	pulumi package gen-sdk bin/${PROVIDER} --language go
+# 	cd sdk && go mod tidy && cd -
 
 ## Empty build target for Go
 build_go_sdk::
