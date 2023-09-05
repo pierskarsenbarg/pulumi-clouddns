@@ -49,11 +49,11 @@ jobs:
         with:
           repo: pulumi/pulumictl
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ env.PR_COMMIT_SHA }}
       - name: Checkout Scripts Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: ci-scripts
           repository: jaxxstorm/scripts
@@ -123,11 +123,11 @@ jobs:
         with:
           repo: pulumi/pulumictl
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ env.PR_COMMIT_SHA }}
       - name: Checkout Scripts Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: ci-scripts
           repository: jaxxstorm/scripts
