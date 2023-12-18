@@ -105,7 +105,6 @@ build_nodejs_sdk:: gen_nodejs_sdk
 		yarn install  && \
 		yarn run tsc --version && \
 		yarn run tsc && \
-		cp -R scripts/ bin && \
 		cp ../../README.md ../../LICENSE package.json ./bin/ && \
 		sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./bin/package.json && \
 		rm ./bin/package.json.bak
