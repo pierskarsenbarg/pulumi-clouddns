@@ -35,7 +35,7 @@ jobs:
           go-version: ${{matrix.goversion}}
           cache-dependency-path: provider/go.sum
       - name: Install NodeJS
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: ${{matrix.nodeversion}}
       - name: Install Pulumi CLI
@@ -99,7 +99,7 @@ jobs:
           go-version: ${{matrix.goversion}}
           cache-dependency-path: provider/go.sum
       - name: Install NodeJS
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: ${{matrix.nodeversion}}
       - if: ${{ matrix.language == 'dotnet' }}
