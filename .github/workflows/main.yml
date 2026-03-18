@@ -24,7 +24,7 @@ jobs:
                     - 1.19.x
         steps:
             - name: Install Go
-              uses: actions/setup-go@v4
+              uses: actions/setup-go@v6
               with: 
                 go-version: ${{matrix.goversion}}
                 cache-dependency-path: provider/go.sum
@@ -87,7 +87,7 @@ jobs:
         steps:
             - if: ${{ matrix.language == 'go' }}
               name: Install Go
-              uses: actions/setup-go@v4
+              uses: actions/setup-go@v6
               with: 
                 go-version: ${{matrix.goversion}}
                 cache-dependency-path: provider/go.sum
